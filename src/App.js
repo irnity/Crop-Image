@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react"
+import "./App.css"
+import Canvas from "./Canvas"
+import ImageUpload from "./ImageUpload"
 
 function App() {
+  const [newImage, setNewImage] = useState()
+
+  const imageHandler = (data) => {
+    setNewImage(data)
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>Hello World</div>
+      <ImageUpload imageHandler={imageHandler} />
+      {newImage && <Canvas loadedImage={newImage} />}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
