@@ -2,16 +2,18 @@ import React, { useEffect, useMemo, useRef, useState } from "react"
 import background from "./images/one.jpg"
 
 function Canvas({ loadedImage }) {
+  // conect ref to canvas
   const canvasRef = useRef(null)
   const ctxRef = useRef(null)
 
   // size image
-  const [size, setSize] = useState(100)
+  const [size, setSize] = useState(200)
   const [angle, setAngle] = useState(0)
 
-  // move direction
+  //
   const [isDrawing, setIsDrawing] = useState(false)
 
+  // move direction
   const [X, setX] = useState(0)
   const [olxX, setOlxX] = useState(0)
 
@@ -34,6 +36,8 @@ function Canvas({ loadedImage }) {
     canvas.height = 600
 
     ctxRef.current = ctx
+    setX(ctxRef.current.canvas.width / 2.5)
+    setY(ctxRef.current.canvas.height / 2.5)
     draw()
   }, [])
 
@@ -42,31 +46,49 @@ function Canvas({ loadedImage }) {
     () =>
       function draw() {
         image.onload = () => {
-          ctxRef.current.drawImage(
-            backImage,
+          // if we need background image
+
+          // ctxRef.current.drawImage(
+          //   backImage,
+          //   0,
+          //   0,
+          //   ctxRef.current.canvas.width,
+          //   ctxRef.current.canvas.height
+          // )
+
+          // fill canvas with empty space because if we
+          // dont use image will render multiple time
+          ctxRef.current.fillStyle = "white"
+          ctxRef.current.fillRect(
             0,
             0,
             ctxRef.current.canvas.width,
             ctxRef.current.canvas.height
           )
 
-          ctxRef.current.save() // save the context
+          ctxRef.current.save()
 
           ctxRef.current.translate(
             ctxRef.current.canvas.width / 2,
             ctxRef.current.canvas.height / 2
-          ) //let's translate
-          ctxRef.current.rotate((Math.PI / 180) * angle) //increment the angle and rotate the image
+          )
+          ctxRef.current.rotate((Math.PI / 180) * angle)
+
           ctxRef.current.translate(
             -(ctxRef.current.canvas.width / 2),
             -(ctxRef.current.canvas.height / 2)
-          ) //let's translate
+          )
 
+          // draw main image that we insert
           ctxRef.current.drawImage(image, X, Y, size, size)
-          // need input slider for cut image
-          const sizez = Math.min(200, 200)
-       
-          // only draw image where mask is
+
+          // size of our crop
+          const sizez = Math.min(
+            ctxRef.current.canvas.width / 1.5,
+            ctxRef.current.canvas.height / 1.5
+          )
+
+          // form of crop
           ctxRef.current.globalCompositeOperation = "destination-in"
 
           // draw our circle mask
@@ -87,11 +109,10 @@ function Canvas({ loadedImage }) {
           ctxRef.current.restore()
         }
       },
-    [X, Y, angle, backImage, image, size]
+    [X, Y, angle, image, size]
   )
 
-  const cut = () => {}
-
+  // main render when we move image
   useEffect(() => {
     draw()
   }, [draw])
@@ -101,8 +122,7 @@ function Canvas({ loadedImage }) {
     setIsDrawing(true)
   }
 
-  //
-
+  // move our image
   const move = ({ nativeEvent }) => {
     if (!isDrawing) {
       return
@@ -131,28 +151,25 @@ function Canvas({ loadedImage }) {
   }
 
   // change state of moving
-
   const finishDrawing = () => {
     setIsDrawing(false)
   }
 
-  //
-
+  // change size of image
   const sizeHandler = (e) => {
     setSize((prevState) => (prevState = e.target.value))
   }
 
-  //
-
+  // change angle of image if we change it move direction is changed to
+  // that will make move top change to move left for example
   const angleHandler = (e) => {
     setAngle(e.target.value)
     draw()
-    setX(ctxRef.current.canvas.width / 4)
-    setY(ctxRef.current.canvas.height / 4)
+    setX(ctxRef.current.canvas.width / 2)
+    setY(ctxRef.current.canvas.height / 2)
   }
 
-  // save image by user
-
+  // save image canvas
   const saveImageToLocal = (event) => {
     let link = event.currentTarget
     link.setAttribute("download", "canvas.png")
@@ -163,25 +180,25 @@ function Canvas({ loadedImage }) {
   return (
     <div>
       <div>
-        <label htmlFor="volume">size {size}</label>
+        <label htmlFor="volume">Scale {size}</label>
         <input
           type="range"
           id="volume"
           name="volume"
-          min="10"
+          min="200"
           // step="100"
           max="600"
           onChange={sizeHandler}
         />
       </div>
       <div>
-        <label htmlFor="position">Position {angle}</label>
+        <label htmlFor="position">Rotate {angle}</label>
         <input
           type="range"
           id="position"
           name="position"
           min="-180"
-          step="10"
+          step="5"
           max="180"
           onChange={angleHandler}
         />
@@ -196,14 +213,11 @@ function Canvas({ loadedImage }) {
       >
         Nothing?
       </canvas>
-      <a
-        id="download_image_link"
-        href="download_link"
-        onClick={saveImageToLocal}
-      >
-        Download Image
-      </a>
-      <button onClick={cut}>Cut</button>
+      <div>
+        <a href="download_link" onClick={saveImageToLocal}>
+          Download Image
+        </a>
+      </div>
     </div>
   )
 }

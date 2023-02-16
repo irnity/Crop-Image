@@ -1,7 +1,6 @@
 import { useState } from "react"
 import "./App.css"
 import Canvas from "./Canvas"
-import CanvasPaint from "./CanvasPaint"
 import ImageUpload from "./ImageUpload"
 
 function App() {
@@ -13,8 +12,7 @@ function App() {
 
   return (
     <div className="App">
-      <div>Hello World</div>
-      {/* <CanvasPaint /> */}
+      <div>Crop Image</div>
       <ImageUpload imageHandler={imageHandler} />
       {newImage && <Canvas loadedImage={newImage} />}
     </div>

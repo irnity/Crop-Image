@@ -2,17 +2,17 @@ import { useState, useEffect } from "react"
 
 const ImageUpload = ({ imageHandler }) => {
   const [selectedFile, setSelectedFile] = useState()
-  const [preview, setPreview] = useState()
+  // const [preview, setPreview] = useState()
 
   // create a preview as a side effect, whenever selected file is changed
   useEffect(() => {
     if (!selectedFile) {
-      setPreview(undefined)
+      // setPreview(undefined)
       return
     }
 
     const objectUrl = URL.createObjectURL(selectedFile)
-    setPreview(objectUrl)
+    // setPreview(objectUrl)
 
     imageHandler(selectedFile)
 
