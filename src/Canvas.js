@@ -63,9 +63,9 @@ function Canvas({ loadedImage }) {
           ) //let's translate
 
           ctxRef.current.drawImage(image, X, Y, size, size)
-          const sizez = Math.min(image.naturalWidth, image.naturalHeight)
-          // ctxRef.current.drawImage(image, 0, 0)
-
+          // need input slider for cut image
+          const sizez = Math.min(200, 200)
+       
           // only draw image where mask is
           ctxRef.current.globalCompositeOperation = "destination-in"
 
