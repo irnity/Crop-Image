@@ -33,9 +33,9 @@ const ImageUpload = ({ imageHandler }) => {
   return (
     <div>
       <input type="file" onChange={onSelectFile} />
-      {selectedFile && (
+      {/* {selectedFile && (
         <img src={preview} style={{ width: "200px", height: "200px" }} />
-      )}
+      )} */}
     </div>
   )
 }
