@@ -9,10 +9,49 @@ function Canvas({ loadedImage }) {
   const image = useMemo(() => new Image(), [])
   const backImage = useMemo(() => new Image(), [])
 
-  // const image = new Image()
-
   image.src = URL.createObjectURL(loadedImage)
   backImage.src = "https://i.stack.imgur.com/6V1Ky.png"
+
+  function draw(ctx, canvas) {
+    // ctx.scale(1,1)
+    // повернути на 10 градусів
+    image.onload = () => {
+      ctx.scale(1, 1)
+      ctx.rotate((0 * Math.PI) / 180)
+      ctx.drawImage(
+        image,
+        position,
+        position,
+        canvas.width / 2,
+        canvas.height / 2
+      )
+
+      // ctx.rotate((-10 * Math.PI) / 180)
+      // // фігури
+      // ctx.beginPath()
+      // // moveTo здвигає 1
+      // ctx.moveTo(250, 150)
+      // // lineTo прокладує лінію 2
+      // ctx.lineTo(350, 150)
+      // // // lineTo прокладує лінію 3
+      // ctx.lineTo(425, 250)
+      // // // lineTo прокладує лінію 4
+      // ctx.lineTo(425, 350)
+      // // // lineTo прокладує лінію 5
+      // ctx.lineTo(350, 450)
+      // // // lineTo прокладує лінію 6
+      // ctx.lineTo(250, 450)
+      // // // lineTo прокладує лінію 7
+      // ctx.lineTo(175, 350)
+      // // // lineTo прокладує лінію 8
+      // ctx.lineTo(175, 250)
+      // // closePath з'єднує останню точку з першою
+      // ctx.closePath()
+      // // бордер
+      // ctx.stroke()
+      // // ctx.drawImage(backImage, 200, 200, 200, 200)
+    }
+  }
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -20,13 +59,10 @@ function Canvas({ loadedImage }) {
     canvas.width = 600
     canvas.height = 600
 
-    ctx.scale(1, 1)
-    image.onload = () => {
-      // ctx.fillStyle = "white"
-      // ctx.fillRect(0, 0, canvas.width, canvas.height)
-      ctx.drawImage(backImage, 0, 0, 200, 200)
-      ctx.drawImage(image, position, position, size, size)
-    }
+    // canvas.width = window.innerWidth / 2
+    // canvas.height = window.innerHeight / 2
+
+    draw(ctx, canvas)
   }, [size, position])
 
   const sizeHandler = (e) => {
@@ -40,12 +76,12 @@ function Canvas({ loadedImage }) {
   return (
     <div>
       <div>
-        <label htmlFor="volume">Volume {size}</label>
+        <label htmlFor="volume">size {size}</label>
         <input
           type="range"
           id="volume"
           name="volume"
-          min="100"
+          min="10"
           // step="100"
           max="600"
           onChange={sizeHandler}
