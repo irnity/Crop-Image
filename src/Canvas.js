@@ -1,21 +1,22 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
+import background from "./images/one.jpg"
 
 function Canvas({ loadedImage }) {
   const canvasRef = useRef(null)
   const ctxRef = useRef(null)
 
   const [size, setSize] = useState(100)
-  const [position, setPosition] = useState(0)
+  const [angle, setAngle] = useState(0)
 
   const [isDrawing, setIsDrawing] = useState(false)
   const [X, setX] = useState(0)
   const [Y, setY] = useState(0)
 
   const image = useMemo(() => new Image(), [])
-  const backImage = useMemo(() => new Image(), [])
-
   image.src = URL.createObjectURL(loadedImage)
-  backImage.src = "https://i.stack.imgur.com/6V1Ky.png"
+
+  const backImage = useMemo(() => new Image(), [])
+  backImage.src = background
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -25,21 +26,35 @@ function Canvas({ loadedImage }) {
     canvas.height = 600
 
     ctxRef.current = ctx
+    draw()
   }, [])
+
+  const draw = useMemo(
+    () =>
+      function draw() {
+        image.onload = () => {
+          ctxRef.current.drawImage(
+            backImage,
+            0,
+            0,
+            ctxRef.current.canvas.width,
+            ctxRef.current.canvas.height
+          )
+          ctxRef.current.save() // save the context
+
+          ctxRef.current.rotate((angle * Math.PI) / 180)
+
+          ctxRef.current.drawImage(image, X, Y, size, size)
+          ctxRef.current.restore()
+        }
+      },
+    [X, Y, angle, backImage, image, size]
+  )
 
   useEffect(() => {
     draw()
-  }, [X, Y, size])
+  }, [draw])
 
-  function draw() {
-    image.onload = () => {
-      // ctxRef.current.scale(1, 1)
-      // ctxRef.current.rotate((0 * Math.PI) / 180)
-      ctxRef.current.fillStyle = "white"
-      ctxRef.current.fillRect(0, 0, 600, 600)
-      ctxRef.current.drawImage(image, X, Y, size, size)
-    }
-  }
   //
   const startDrawing = () => {
     setIsDrawing(true)
@@ -68,8 +83,15 @@ function Canvas({ loadedImage }) {
     setSize((prevState) => (prevState = e.target.value))
   }
 
-  const positionHandler = (e) => {
-    setPosition((prevState) => (prevState = e.target.value))
+  const angleHandler = (e) => {
+    setAngle(e.target.value)
+  }
+
+  const saveImageToLocal = (event) => {
+    let link = event.currentTarget
+    link.setAttribute("download", "canvas.png")
+    let image = canvasRef.current.toDataURL("image/png")
+    link.setAttribute("href", image)
   }
 
   return (
@@ -87,15 +109,15 @@ function Canvas({ loadedImage }) {
         />
       </div>
       <div>
-        <label htmlFor="position">Position {position}</label>
+        <label htmlFor="position">Position {angle}</label>
         <input
           type="range"
           id="position"
           name="position"
           min="0"
           // step="40"
-          max="200"
-          onChange={positionHandler}
+          max="180"
+          onChange={angleHandler}
         />
       </div>
       <canvas
@@ -107,6 +129,13 @@ function Canvas({ loadedImage }) {
       >
         Nothing?
       </canvas>
+      <a
+        id="download_image_link"
+        href="download_link"
+        onClick={saveImageToLocal}
+      >
+        Download Image
+      </a>
     </div>
   )
 }
