@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import classes from "./ImageUpload.module.css"
 
 const ImageUpload = ({ imageHandler }) => {
   const [selectedFile, setSelectedFile] = useState()
@@ -28,9 +29,14 @@ const ImageUpload = ({ imageHandler }) => {
   }
 
   return (
-    <div>
-      <input type="file" onChange={onSelectFile} />
-
+    <div className={classes.input_box}>
+      <label htmlFor="input">Download Image</label>
+      <input
+        id="input"
+        className={classes.input}
+        type="file"
+        onChange={onSelectFile}
+      />
     </div>
   )
 }

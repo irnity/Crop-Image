@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import background from "./images/one.jpg"
+import background from "../images/one.jpg"
+import classes from "./Canvas.module.css"
 
 function Canvas({ loadedImage }) {
   // conect ref to canvas
@@ -171,45 +172,56 @@ function Canvas({ loadedImage }) {
   }
 
   return (
-    <div>
-      <div>
-        <label htmlFor="volume">Scale </label>
-        <input
-          type="range"
-          id="volume"
-          name="volume"
-          min="200"
-          // step="100"
-          max="1000"
-          onChange={sizeHandler}
-        />
+    <div className={classes.box}>
+      <div className={classes.canvasBox}>
+        <canvas
+          className={classes.canvas}
+          onMouseDown={startDrawing}
+          onMouseUp={finishDrawing}
+          onMouseMove={move}
+          onMouseLeave={finishDrawing}
+          ref={canvasRef}
+        >
+          Nothing?
+        </canvas>
       </div>
-      <div>
-        <label htmlFor="position">Rotate {angle}</label>
-        <input
-          type="range"
-          id="position"
-          name="position"
-          min="-180"
-          step="5"
-          max="180"
-          onChange={angleHandler}
-        />
-      </div>
-      <canvas
-        style={{ border: "1px solid black" }}
-        onMouseDown={startDrawing}
-        onMouseUp={finishDrawing}
-        onMouseMove={move}
-        onMouseLeave={finishDrawing}
-        ref={canvasRef}
-      >
-        Nothing?
-      </canvas>
-      <div>
-        <a href="download_link" onClick={saveImageToLocal}>
-          Download Image
-        </a>
+      <div className={classes.settings_box}>
+        <div className={classes.setting}>
+          <label className={classes.setting_input} htmlFor="volume">
+            Scale
+          </label>
+          <input
+            className={classes.setting_input}
+            type="range"
+            id="volume"
+            name="volume"
+            min="200"
+            // step="100"
+            max="1000"
+            onChange={sizeHandler}
+          />
+        </div>
+        <div className={classes.setting}>
+          <label className={classes.setting_input} htmlFor="position">
+            Rotate {angle}
+          </label>
+          <input
+            className={classes.setting_input}
+            type="range"
+            id="position"
+            name="position"
+            min="-180"
+            step="5"
+            max="180"
+            onChange={angleHandler}
+          />
+        </div>
+
+        <div className={classes.setting}>
+          <a className={classes.download} href="download_link" onClick={saveImageToLocal}>
+            Download Image
+          </a>
+        </div>
       </div>
     </div>
   )

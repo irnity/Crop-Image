@@ -1,0 +1,41 @@
+.box {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+}
+
+.canvasBox {
+  width: 60%;
+}
+.canvas {
+  border: 1px solid black;
+}
+
+.settings_box {
+  width: 40%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.setting {
+  width: 45%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+.setting_input {
+  font-size: 25px;
+}
+
+.download {
+  text-decoration: none;
+  color: black;
+  font-size: 25px;
+}
+.download:hover {
+  color: red;
+}
