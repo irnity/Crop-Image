@@ -56,15 +56,32 @@ function Canvas({ loadedImage }) {
           //   ctxRef.current.canvas.height
           // )
 
-          // fill canvas with empty space because if we
-          // dont use image will render multiple time
-          ctxRef.current.fillStyle = "white"
-          ctxRef.current.fillRect(
+          // clear canvas
+          ctxRef.current.clearRect(
             0,
             0,
             ctxRef.current.canvas.width,
             ctxRef.current.canvas.height
           )
+
+          // make crop
+
+          let circlePath = new Path2D()
+
+          circlePath.ellipse(
+            ctxRef.current.canvas.width / 2,
+            ctxRef.current.canvas.height / 2,
+            ctxRef.current.canvas.width / 3.5,
+            ctxRef.current.canvas.height / 3,
+            0,
+            0,
+            Math.PI * 2
+          )
+
+          // Set the clip to the circle
+          ctxRef.current.clip(circlePath)
+          // Set the clip to be the intersection of the circle and the square
+          // ctxRef.current.clip(squarePath)
 
           ctxRef.current.save()
 
@@ -81,30 +98,6 @@ function Canvas({ loadedImage }) {
 
           // draw main image that we insert
           ctxRef.current.drawImage(image, X, Y, size, size)
-
-          // size of our crop
-          const sizez = Math.min(
-            ctxRef.current.canvas.width / 1.5,
-            ctxRef.current.canvas.height / 1.5
-          )
-
-          // form of crop
-          ctxRef.current.globalCompositeOperation = "destination-in"
-
-          // draw our circle mask
-          ctxRef.current.fillStyle = "#000"
-          ctxRef.current.beginPath()
-          ctxRef.current.arc(
-            ctxRef.current.canvas.width / 2,
-            ctxRef.current.canvas.height / 2,
-            sizez * 0.5, // radius
-            0, // start angle
-            2 * Math.PI // end angle
-          )
-          ctxRef.current.fill()
-
-          // restore to default composite operation (is draw over current image)
-          ctxRef.current.globalCompositeOperation = "source-over"
 
           ctxRef.current.restore()
         }
@@ -165,8 +158,8 @@ function Canvas({ loadedImage }) {
   const angleHandler = (e) => {
     setAngle(e.target.value)
     draw()
-    setX(ctxRef.current.canvas.width / 2)
-    setY(ctxRef.current.canvas.height / 2)
+    setX(ctxRef.current.canvas.width / 4)
+    setY(ctxRef.current.canvas.height / 4)
   }
 
   // save image canvas
@@ -180,14 +173,14 @@ function Canvas({ loadedImage }) {
   return (
     <div>
       <div>
-        <label htmlFor="volume">Scale {size}</label>
+        <label htmlFor="volume">Scale </label>
         <input
           type="range"
           id="volume"
           name="volume"
           min="200"
           // step="100"
-          max="600"
+          max="1000"
           onChange={sizeHandler}
         />
       </div>

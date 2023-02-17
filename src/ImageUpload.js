@@ -18,7 +18,7 @@ const ImageUpload = ({ imageHandler }) => {
 
     // free memory when ever this component is unmounted
     return () => URL.revokeObjectURL(objectUrl)
-  }, [selectedFile])
+  }, [imageHandler, selectedFile])
 
   const onSelectFile = (e) => {
     if (!e.target.files || e.target.files.length === 0) {
