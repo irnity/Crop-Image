@@ -154,11 +154,25 @@ function Canvas({ loadedImage }) {
     link.setAttribute("href", image)
   }
 
+  //
+  const sizeByWheelHandler = (e) => {
+    // wheel up
+    if (e.deltaY === -100 && size < 1000) {
+      setSize((prevState) => prevState + 10)
+    }
+    // wheel down
+    if (e.deltaY === 100 && size > 200) {
+      setSize((prevState) => prevState - 10)
+    }
+  }
+
   return (
     <div className={classes.box}>
+    
       <div className={classes.mask_box}>
         <img src={mask} alt="d" className={classes.mask} />
       </div>
+
       <div className={classes.canvasBox}>
         <canvas
           className={classes.canvas}
@@ -166,6 +180,7 @@ function Canvas({ loadedImage }) {
           onMouseUp={finishDrawing}
           onMouseMove={move}
           onMouseLeave={finishDrawing}
+          onWheel={sizeByWheelHandler}
           ref={canvasRef}
         >
           Nothing?
@@ -182,6 +197,7 @@ function Canvas({ loadedImage }) {
             id="volume"
             name="volume"
             min="200"
+            value={size}
             // step="100"
             max="1000"
             onChange={sizeHandler}
@@ -202,29 +218,33 @@ function Canvas({ loadedImage }) {
             onChange={angleHandler}
           />
         </div>
-        <div className={classes.setting}>
-          <label className={classes.setting_input} htmlFor="crop">
-            Crop
-          </label>
-          <input
-            className={classes.setting_input}
-            type="button"
-            id="crop"
-            name="crop"
-            onClick={toggleCropHandler}
-            value={downloaded}
-          />
-        </div>
+        {!downloaded && (
+          <div className={classes.setting}>
+            <label className={classes.setting_input} htmlFor="crop">
+              Crop
+            </label>
+            <input
+              className={classes.setting_input}
+              type="button"
+              id="crop"
+              name="crop"
+              onClick={toggleCropHandler}
+              value={"Crop"}
+            />
+          </div>
+        )}
 
-        <div className={classes.setting}>
-          <a
-            className={classes.download}
-            href="download_link"
-            onClick={saveImageToLocal}
-          >
-            Download Image
-          </a>
-        </div>
+        {downloaded && (
+          <div className={classes.setting}>
+            <a
+              className={classes.download}
+              href="download_link"
+              onClick={saveImageToLocal}
+            >
+              Download Image
+            </a>
+          </div>
+        )}
       </div>
     </div>
   )
