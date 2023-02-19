@@ -5,6 +5,16 @@
   align-items: center;
   align-content: center;
 }
+.mask_box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  position: absolute;
+  margin-right: 40%;
+  pointer-events: none;
+  /* background-color: rgb(245, 243, 243); */
+}
 
 .canvasBox {
   width: 60%;
