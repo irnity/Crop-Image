@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from "react"
 import classes from "./Canvas.module.css"
 import mask from "../images/faceMask.svg"
 import useSize from "../hooks/use-sizeHook"
+import useMove from "../hooks/use-moveHook"
+import useDownload from "../hooks/use-saveHook"
 
 function Canvas({ loadedImage, maskCrop }) {
   // conect ref to canvas
@@ -10,17 +12,21 @@ function Canvas({ loadedImage, maskCrop }) {
 
   // size image
   const { size, sizeHandler, sizeByWheelHandler } = useSize()
-  
+
+  // moving image
+  const {
+    xPosition,
+    yPosition,
+    changePosition,
+    startDrawing,
+    move,
+    finishDrawing,
+  } = useMove()
+
+  const { downloaded, toggleCropHandler, saveImageToLocal } =
+    useDownload(canvasRef)
+
   const [angle, setAngle] = useState(0)
-
-  // move direction
-  const [isMouseDragging, setIsMouseDragging] = useState(false)
-  const [xPosition, setXPosition] = useState(0)
-  const [olxX, setPreviousX] = useState(0)
-  const [yPosition, setYPosition] = useState(0)
-  const [olxY, setPreviousY] = useState(0)
-
-  const [downloaded, setDownloaded] = useState(false)
 
   // download image
   const image = useMemo(() => new Image(), [])
@@ -34,8 +40,10 @@ function Canvas({ loadedImage, maskCrop }) {
     canvas.height = 600
 
     ctxRef.current = ctx
-    setXPosition(canvasRef.current.width / 2.5)
-    setYPosition(canvasRef.current.height / 2.5)
+    changePosition(
+      canvasRef.current.width / 2.5,
+      canvasRef.current.height / 2.5
+    )
   }, [])
 
   // rendering image
@@ -99,69 +107,17 @@ function Canvas({ loadedImage, maskCrop }) {
     draw()
   }, [draw])
 
-  // change state of moving
-  const startDrawing = () => {
-    setIsMouseDragging(true)
-  }
-
-  // move our image
-  const move = ({ nativeEvent }) => {
-    if (!isMouseDragging) {
-      return
-    }
-    const { offsetX, offsetY } = nativeEvent
-
-    // right
-    if (offsetX > olxX) {
-      setXPosition((prevState) => prevState + 4)
-      setPreviousX(offsetX)
-      // left
-    } else if (offsetX < olxX) {
-      setXPosition((prevState) => prevState - 4)
-      setPreviousX(offsetX)
-    }
-
-    // up
-    if (offsetY > olxY) {
-      setYPosition((prevState) => prevState + 4)
-      setPreviousY(offsetY)
-      // down
-    } else if (offsetY < olxY) {
-      setYPosition((prevState) => prevState - 4)
-      setPreviousY(offsetY)
-    }
-  }
-
-  // change state of moving
-  const finishDrawing = () => {
-    setIsMouseDragging(false)
-  }
-
-  // change size of image
-
   // change angle of image if we change it move direction is changed to
   // that will make move top change to move left for example
   const angleHandler = (e) => {
     setAngle(e.target.value)
-    setXPosition(canvasRef.current.width / 4)
-    setYPosition(canvasRef.current.height / 4)
-  }
-
-  const toggleCropHandler = () => {
-    setDownloaded(true)
-  }
-
-  // save image canvas
-  const saveImageToLocal = (event) => {
-    let link = event.currentTarget
-    link.setAttribute("download", "canvas.png")
-    let image = canvasRef.current.toDataURL("image/png")
-    link.setAttribute("href", image)
+    changePosition(canvasRef.current.width / 4, canvasRef.current.height / 4)
   }
 
   const scrollHandlerOn = () => {
     document.body.style.overflow = "hidden"
   }
+
   const scrollHandlerOff = () => {
     document.body.style.overflow = "auto"
   }
@@ -171,7 +127,7 @@ function Canvas({ loadedImage, maskCrop }) {
   return (
     <div className={classes.box}>
       <div className={classes.mask_box}>
-        <img src={mask} alt="d" className={classes.mask} />
+        <img src={mask} alt="Mask" className={classes.mask} />
       </div>
 
       <div className={classes.canvasBox}>
