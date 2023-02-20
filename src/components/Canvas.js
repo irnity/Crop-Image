@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import classes from "./Canvas.module.css"
 import mask from "../images/faceMask.svg"
+import useSize from "../hooks/use-sizeHook"
 
 function Canvas({ loadedImage, maskCrop }) {
   // conect ref to canvas
@@ -8,7 +9,8 @@ function Canvas({ loadedImage, maskCrop }) {
   const ctxRef = useRef(null)
 
   // size image
-  const [size, setSize] = useState(200)
+  const { size, sizeHandler, sizeByWheelHandler } = useSize()
+  
   const [angle, setAngle] = useState(0)
 
   // move direction
@@ -80,7 +82,16 @@ function Canvas({ loadedImage, maskCrop }) {
           ctxRef.current.restore()
         }
       },
-    [image, loadedImage, downloaded, angle, xPosition, yPosition, size]
+    [
+      image,
+      loadedImage,
+      downloaded,
+      angle,
+      xPosition,
+      yPosition,
+      size,
+      maskCrop,
+    ]
   )
 
   // main render when we move image
@@ -127,9 +138,6 @@ function Canvas({ loadedImage, maskCrop }) {
   }
 
   // change size of image
-  const sizeHandler = (e) => {
-    setSize(e.target.value)
-  }
 
   // change angle of image if we change it move direction is changed to
   // that will make move top change to move left for example
@@ -159,16 +167,6 @@ function Canvas({ loadedImage, maskCrop }) {
   }
 
   //
-  const sizeByWheelHandler = (e) => {
-    // wheel up
-    if (e.deltaY === -100 && size < 1000) {
-      setSize((prevState) => prevState + 10)
-    }
-    // wheel down
-    if (e.deltaY === 100 && size > 200) {
-      setSize((prevState) => prevState - 10)
-    }
-  }
 
   return (
     <div className={classes.box}>
