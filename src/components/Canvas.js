@@ -154,6 +154,13 @@ function Canvas({ loadedImage }) {
     link.setAttribute("href", image)
   }
 
+  const scrollHandlerOn = () => {
+    document.body.style.overflow = "hidden"
+  }
+  const scrollHandlerOff = () => {
+    document.body.style.overflow = "auto"
+  }
+
   //
   const sizeByWheelHandler = (e) => {
     // wheel up
@@ -168,7 +175,6 @@ function Canvas({ loadedImage }) {
 
   return (
     <div className={classes.box}>
-    
       <div className={classes.mask_box}>
         <img src={mask} alt="d" className={classes.mask} />
       </div>
@@ -179,7 +185,11 @@ function Canvas({ loadedImage }) {
           onMouseDown={startDrawing}
           onMouseUp={finishDrawing}
           onMouseMove={move}
-          onMouseLeave={finishDrawing}
+          onMouseEnter={scrollHandlerOn}
+          onMouseLeave={() => {
+            scrollHandlerOff()
+            finishDrawing()
+          }}
           onWheel={sizeByWheelHandler}
           ref={canvasRef}
         >
@@ -212,6 +222,7 @@ function Canvas({ loadedImage }) {
             type="range"
             id="position"
             name="position"
+            defaultValue={0}
             min="-180"
             step="5"
             max="180"
