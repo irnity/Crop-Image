@@ -1,12 +1,14 @@
-.input_box {
-  margin: 10px;
+.box {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-.input {
-  padding: 5px;
-  display: flex;
-  /* margin: 10px; */
+.select {
+  width: 20%;
+  margin: 5px;
+}
+.button {
+  width: 20%;
+  margin: 5px;
 }

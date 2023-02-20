@@ -30,7 +30,9 @@ const ImageUpload = ({ imageHandler }) => {
 
   return (
     <div className={classes.input_box}>
-      <label htmlFor="input">Download Image</label>
+      <label htmlFor="input">
+        <h3>Download Image</h3>
+      </label>
       <input
         id="input"
         className={classes.input}

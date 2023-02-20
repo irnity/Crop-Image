@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react"
 import classes from "./Canvas.module.css"
 import mask from "../images/faceMask.svg"
 
-function Canvas({ loadedImage }) {
+function Canvas({ loadedImage, maskCrop }) {
   // conect ref to canvas
   const canvasRef = useRef(null)
   const ctxRef = useRef(null)
@@ -52,10 +52,7 @@ function Canvas({ loadedImage }) {
 
           // make crop
           if (downloaded === true) {
-            ctxRef.current.save()
-            let Mask = new Path2D(
-              "M2.3699 88.9367C-2.11311 42.3243 34.7252 2 81.7913 2H90.0318C137.296 2 174.198 42.6479 169.404 89.4275L159.328 187.749C155.472 225.378 123.62 254 85.6014 254C47.4065 254 15.4674 225.12 11.8294 187.293L2.3699 88.9367Z "
-            )
+            let Mask = new Path2D(maskCrop)
             const position = new Path2D()
             position.addPath(Mask, {
               e: canvasRef.current.width / 2.8,
@@ -222,7 +219,7 @@ function Canvas({ loadedImage }) {
             type="range"
             id="position"
             name="position"
-            defaultValue={0}
+            value={angle}
             min="-180"
             step="5"
             max="180"
@@ -231,17 +228,12 @@ function Canvas({ loadedImage }) {
         </div>
         {!downloaded && (
           <div className={classes.setting}>
-            <label className={classes.setting_input} htmlFor="crop">
-              Crop
-            </label>
-            <input
+            <button
               className={classes.setting_input}
-              type="button"
-              id="crop"
-              name="crop"
               onClick={toggleCropHandler}
-              value={"Crop"}
-            />
+            >
+              Image cut
+            </button>
           </div>
         )}
 
