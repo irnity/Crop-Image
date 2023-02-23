@@ -12,6 +12,7 @@
   align-content: center;
   position: absolute;
   margin-right: 40%;
+  font-size: 5vh;
   pointer-events: none;
   /* background-color: rgb(245, 243, 243); */
 }
@@ -21,6 +22,8 @@
 }
 .canvas {
   border: 1px solid black;
+  width: 600px;
+  height: 600px;
 }
 
 .settings_box {

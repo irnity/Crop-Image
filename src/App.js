@@ -24,7 +24,7 @@ function App() {
         <h1>Crop Image</h1>
       </div>
       {mask && newImage && <Canvas loadedImage={newImage} maskCrop={mask} />}
-      {!mask && <Mask chooseUserMaskHandler={maskHandler} />}
+      {!mask && <Mask chooseUserMaskHandler={maskHandler} imageHandler={imageHandler} />}
       <ImageUpload imageHandler={imageHandler} />
     </div>
   )

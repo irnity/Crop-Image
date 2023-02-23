@@ -5,7 +5,7 @@ import useSize from "../hooks/use-sizeHook"
 import useMove from "../hooks/use-moveHook"
 import useDownload from "../hooks/use-saveHook"
 
-function Canvas({ loadedImage, maskCrop }) {
+function Canvas({ loadedImage, imageHandler, maskCrop }) {
   // conect ref to canvas
   const canvasRef = useRef(null)
   const ctxRef = useRef(null)
@@ -36,14 +36,10 @@ function Canvas({ loadedImage, maskCrop }) {
     const canvas = canvasRef.current
     const ctx = canvas.getContext("2d")
 
-    canvas.width = 600
-    canvas.height = 600
-
+    canvas.width = 330
+    canvas.height = 330
     ctxRef.current = ctx
-    changePosition(
-      canvasRef.current.width / 2.5,
-      canvasRef.current.height / 2.5
-    )
+    changePosition(60, 50)
   }, [])
 
   // rendering image
@@ -65,8 +61,8 @@ function Canvas({ loadedImage, maskCrop }) {
             let Mask = new Path2D(maskCrop)
             const position = new Path2D()
             position.addPath(Mask, {
-              e: canvasRef.current.width / 2.8,
-              f: canvasRef.current.height / 3.5,
+              e: 76,
+              f: 35,
             })
             ctxRef.current.clip(position)
           }
@@ -127,7 +123,13 @@ function Canvas({ loadedImage, maskCrop }) {
   return (
     <div className={classes.box}>
       <div className={classes.mask_box}>
-        <img src={mask} alt="Mask" className={classes.mask} />
+        <img
+          src={mask}
+          alt="Mask"
+          width="600px"
+          height="600px"
+          className={classes.mask}
+        />
       </div>
 
       <div className={classes.canvasBox}>
