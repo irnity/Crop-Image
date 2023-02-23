@@ -69,19 +69,21 @@ function Canvas({ loadedImage, imageHandler, maskCrop }) {
 
           ctxRef.current.save()
 
-          ctxRef.current.translate(
-            canvasRef.current.width / 2,
-            canvasRef.current.height / 2
-          )
-          ctxRef.current.rotate((Math.PI / 180) * angle)
+          const centerX = canvasRef.current.width / 2
+          const centerY = canvasRef.current.height / 2
 
-          ctxRef.current.translate(
-            -(canvasRef.current.width / 2),
-            -(canvasRef.current.height / 2)
-          )
+          // Спочатку зміщуємо зображення до центру
+          ctxRef.current.translate(centerX, centerY)
+
+          // Повертаємо зображення на заданий кут
+          ctxRef.current.rotate((angle * Math.PI) / 180)
+          ctxRef.current.scale(size / 1000, size / 1000)
+
+          // Зміщуємо зображення назад
+          ctxRef.current.translate(-centerX, -centerY)
 
           // draw main image that we insert
-          ctxRef.current.drawImage(image, xPosition, yPosition, size, size)
+          ctxRef.current.drawImage(image, xPosition, yPosition)
 
           ctxRef.current.restore()
         }
@@ -107,7 +109,7 @@ function Canvas({ loadedImage, imageHandler, maskCrop }) {
   // that will make move top change to move left for example
   const angleHandler = (e) => {
     setAngle(e.target.value)
-    changePosition(canvasRef.current.width / 4, canvasRef.current.height / 4)
+    // changePosition(canvasRef.current.width / 4, canvasRef.current.height / 4)
   }
 
   const scrollHandlerOn = () => {
