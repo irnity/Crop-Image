@@ -161,10 +161,9 @@ function Canvas({ loadedImage, imageHandler, maskCrop }) {
             type="range"
             id="volume"
             name="volume"
-            min="200"
+            min={200}
             value={size}
-            // step="100"
-            max="1000"
+            max={1000}
             onChange={sizeHandler}
           />
         </div>
