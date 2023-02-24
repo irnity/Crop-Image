@@ -21,15 +21,19 @@ function Canvas({ loadedImage, maskCrop }) {
   const { size, sizeHandler, sizeByWheelHandler } = useSize()
   // move hook
   const {
+    ePosition,
+    fPosition,
     xPosition,
     yPosition,
     TouchmoveDrawing,
+    changePosition,
     startDrawing,
     move,
     finishDrawing,
   } = useMove()
   // download hook
-  const { downloaded, saveImageToLocal } = useDownload(canvasRef)
+  const { canWid, canHei, downloaded, saveImageToLocal } =
+    useDownload(canvasRef)
   // overflow hook
   const { scrollHandlerOn, scrollHandlerOff } = useOverFlow()
   // angle hook
@@ -43,10 +47,10 @@ function Canvas({ loadedImage, maskCrop }) {
     const canvas = canvasRef.current
     const ctx = canvas.getContext("2d")
 
-    canvas.width = 330
-    canvas.height = 330
+    canvas.width = canWid
+    canvas.height = canHei
     ctxRef.current = ctx
-  }, [downloaded])
+  }, [canHei, canWid, downloaded])
 
   // rendering image
   const draw = useMemo(
@@ -68,8 +72,10 @@ function Canvas({ loadedImage, maskCrop }) {
             let Mask = new Path2D(maskCrop)
             const position = new Path2D()
             position.addPath(Mask, {
-              e: 76,
-              f: 35,
+              // e: 76,
+              // f: 35,
+              e: ePosition,
+              f: fPosition,
             })
             ctxRef.current.clip(position)
           }
@@ -156,7 +162,9 @@ function Canvas({ loadedImage, maskCrop }) {
           min={-180}
           max={180}
         />
-        <DownloadButton handler={saveImageToLocal} />
+        <DownloadButton handler={saveImageToLocal} moveHandler={changePosition}>
+          fff
+        </DownloadButton>
       </div>
     </div>
   )

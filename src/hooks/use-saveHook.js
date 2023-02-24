@@ -2,6 +2,8 @@ import { useState } from "react"
 
 const useDownload = (canvasRef) => {
   const [downloaded, setDownloaded] = useState(false)
+  const [canWid, setcanWid] = useState(330)
+  const [canHei, setcanHei] = useState(330)
 
   const toggleCropHandler = () => {
     setDownloaded((prevState) => !prevState)
@@ -12,8 +14,9 @@ const useDownload = (canvasRef) => {
 
   const saveImageToLocal = async () => {
     setDownloaded((prevState) => !prevState)
-
-    await delay(300)
+    setcanWid(172)
+    setcanHei(256)
+    await delay(250)
 
     const dataURL = canvasRef.current.toDataURL()
     const link = document.createElement("a")
@@ -23,12 +26,13 @@ const useDownload = (canvasRef) => {
     link.click()
     document.body.removeChild(link)
 
-    await delay(300)
-
+    await delay(25)
+    setcanWid(330)
+    setcanHei(330)
     setDownloaded((prevState) => !prevState)
   }
 
-  return { downloaded, toggleCropHandler, saveImageToLocal }
+  return { canWid, canHei, downloaded, toggleCropHandler, saveImageToLocal }
 }
 
 export default useDownload
