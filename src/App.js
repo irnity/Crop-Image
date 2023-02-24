@@ -10,10 +10,12 @@ function App() {
   const [newImage, setNewImage] = useState()
   const [mask, setMask] = useState("")
 
+  // select image
   const imageHandler = (data) => {
     setNewImage(data)
   }
 
+  // select mask
   const maskHandler = (data) => {
     setMask(data)
   }

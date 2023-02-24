@@ -2,6 +2,7 @@ import { useState } from "react"
 
 const useDownload = (canvasRef) => {
   const [downloaded, setDownloaded] = useState(false)
+  //canvas widht and height
   const [canWid, setcanWid] = useState(330)
   const [canHei, setcanHei] = useState(330)
 
@@ -13,11 +14,13 @@ const useDownload = (canvasRef) => {
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
   const saveImageToLocal = async () => {
+    // change size of canvas
     setDownloaded((prevState) => !prevState)
     setcanWid(172)
     setcanHei(256)
     await delay(250)
 
+    // save canvas as image
     const dataURL = canvasRef.current.toDataURL()
     const link = document.createElement("a")
     link.download = "canvas-image.png"
@@ -26,6 +29,7 @@ const useDownload = (canvasRef) => {
     link.click()
     document.body.removeChild(link)
 
+    // return canvas to start size
     await delay(25)
     setcanWid(330)
     setcanHei(330)

@@ -101,7 +101,6 @@ const useMove = () => {
     yPosition,
 
     TouchmoveDrawing,
-
     changePosition,
     startDrawing,
     move,

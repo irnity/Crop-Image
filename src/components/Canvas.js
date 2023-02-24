@@ -49,6 +49,7 @@ function Canvas({ loadedImage, maskCrop }) {
 
     canvas.width = canWid
     canvas.height = canHei
+
     ctxRef.current = ctx
   }, [canHei, canWid, downloaded])
 
@@ -67,7 +68,6 @@ function Canvas({ loadedImage, maskCrop }) {
           )
 
           // make crop
-
           if (downloaded === true) {
             let Mask = new Path2D(maskCrop)
             const position = new Path2D()
@@ -82,17 +82,18 @@ function Canvas({ loadedImage, maskCrop }) {
 
           ctxRef.current.save()
 
+          // find centre
           const centerX = canvasRef.current.width / 2
           const centerY = canvasRef.current.height / 2
 
-          // Спочатку зміщуємо зображення до центру
+          // translate to centre
           ctxRef.current.translate(centerX, centerY)
 
-          // Повертаємо зображення на заданий кут
+          // rotate & scale
           ctxRef.current.rotate((angle * Math.PI) / 180)
           ctxRef.current.scale(size / 1000, size / 1000)
 
-          // Зміщуємо зображення назад
+          // translate back from centre
           ctxRef.current.translate(-centerX, -centerY)
 
           // draw main image that we insert
