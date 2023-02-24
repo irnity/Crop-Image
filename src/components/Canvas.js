@@ -20,7 +20,14 @@ function Canvas({ loadedImage, maskCrop }) {
   // size hook
   const { size, sizeHandler, sizeByWheelHandler } = useSize()
   // move hook
-  const { xPosition, yPosition, startDrawing, move, finishDrawing } = useMove()
+  const {
+    xPosition,
+    yPosition,
+    TouchmoveDrawing,
+    startDrawing,
+    move,
+    finishDrawing,
+  } = useMove()
   // download hook
   const { downloaded, saveImageToLocal } = useDownload(canvasRef)
   // overflow hook
@@ -107,26 +114,31 @@ function Canvas({ loadedImage, maskCrop }) {
 
   return (
     <div className={classes.box}>
-      <div className={classes.mask_box}>
-        <img src={mask} alt="Mask" className={classes.mask} />
-      </div>
+      <div>
+        <div className={classes.mask_box}>
+          <img src={mask} alt="Mask" className={classes.mask} />
+        </div>
 
-      <div className={classes.canvasBox}>
-        <canvas
-          className={classes.canvas}
-          onMouseDown={startDrawing}
-          onMouseUp={finishDrawing}
-          onMouseMove={move}
-          onMouseEnter={scrollHandlerOn}
-          onMouseLeave={() => {
-            scrollHandlerOff()
-            finishDrawing()
-          }}
-          onWheel={sizeByWheelHandler}
-          ref={canvasRef}
-        >
-          Nothing?
-        </canvas>
+        <div className={classes.canvasBox}>
+          <canvas
+            className={classes.canvas}
+            onTouchStart={startDrawing}
+            onTouchMove={TouchmoveDrawing}
+            onTouchEnd={finishDrawing}
+            onMouseDown={startDrawing}
+            onMouseMove={move}
+            onMouseUp={finishDrawing}
+            onMouseEnter={scrollHandlerOn}
+            onMouseLeave={() => {
+              scrollHandlerOff()
+              finishDrawing()
+            }}
+            onWheel={sizeByWheelHandler}
+            ref={canvasRef}
+          >
+            Nothing?
+          </canvas>
+        </div>
       </div>
 
       <div className={classes.settings_box}>

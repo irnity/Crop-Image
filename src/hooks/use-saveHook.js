@@ -13,7 +13,7 @@ const useDownload = (canvasRef) => {
   const saveImageToLocal = async () => {
     setDownloaded((prevState) => !prevState)
 
-    await delay(5)
+    await delay(300)
 
     const dataURL = canvasRef.current.toDataURL()
     const link = document.createElement("a")
@@ -22,6 +22,8 @@ const useDownload = (canvasRef) => {
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
+
+    await delay(300)
 
     setDownloaded((prevState) => !prevState)
   }

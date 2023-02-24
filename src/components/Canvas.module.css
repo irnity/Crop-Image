@@ -14,6 +14,7 @@
   margin-right: 40%;
   font-size: 5vh;
   pointer-events: none;
+  /* background-color: rgb(245, 243, 243); */
 }
 .mask {
   width: 600px;
@@ -27,12 +28,40 @@
   border: 1px solid black;
   width: 600px;
   height: 600px;
+  touch-action: none;
 }
 
 .settings_box {
+  margin: 25px;
   width: 40%;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
   flex-direction: column;
+}
+
+@media all and (max-width: 1200px) {
+  .box {
+    flex-direction: column;
+  }
+  .mask {
+    width: 500px;
+    height: 500px;
+  }
+  .canvas {
+    border: 1px solid black;
+    width: 500px;
+    height: 500px;
+  }
+}
+@media all and (max-width: 600px) {
+  .mask {
+    width: 300px;
+    height: 300px;
+  }
+  .canvas {
+    border: 1px solid black;
+    width: 300px;
+    height: 300px;
+  }
 }

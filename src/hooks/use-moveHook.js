@@ -40,9 +40,30 @@ const useMove = () => {
     }
   }
 
-  const changePosition = (x, y) => {
-    setXPosition(x)
-    setYPosition(y)
+  function TouchmoveDrawing(e) {
+    if (!isMouseDragging) {
+      return
+    }
+    e.preventDefault()
+    // right
+    if (e.touches[0].clientX > olxX) {
+      setXPosition((prevState) => prevState + 4)
+      setPreviousX(e.touches[0].clientX)
+      // left
+    } else if (e.touches[0].clientX < olxX) {
+      setXPosition((prevState) => prevState - 4)
+      setPreviousX(e.touches[0].clientX)
+    }
+
+    // up
+    if (e.touches[0].clientY > olxY) {
+      setYPosition((prevState) => prevState + 4)
+      setPreviousY(e.touches[0].clientY)
+      // down
+    } else if (e.touches[0].clientY < olxY) {
+      setYPosition((prevState) => prevState - 4)
+      setPreviousY(e.touches[0].clientY)
+    }
   }
 
   // change state of moving
@@ -50,9 +71,16 @@ const useMove = () => {
     setIsMouseDragging(false)
   }
 
+  const changePosition = (x, y) => {
+    setXPosition(x)
+    setYPosition(y)
+  }
+
   return {
     xPosition,
     yPosition,
+
+    TouchmoveDrawing,
 
     changePosition,
     startDrawing,
