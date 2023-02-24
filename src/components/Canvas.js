@@ -1,24 +1,32 @@
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef } from "react"
+
 import classes from "./Canvas.module.css"
+
 import mask from "../images/faceMask.svg"
+
 import useSize from "../hooks/use-sizeHook"
 import useMove from "../hooks/use-moveHook"
+import useOverFlow from "../hooks/use-overflowHook"
 import useDownload from "../hooks/use-saveHook"
+import Input from "./Input"
+import DownloadButton from "./DownloadButton"
+import useAngle from "../hooks/use-angleHook"
 
-function Canvas({ loadedImage, imageHandler, maskCrop }) {
+function Canvas({ loadedImage, maskCrop }) {
   // conect ref to canvas
   const canvasRef = useRef(null)
   const ctxRef = useRef(null)
 
-  // size image
+  // size hook
   const { size, sizeHandler, sizeByWheelHandler } = useSize()
-
-  // moving image
+  // move hook
   const { xPosition, yPosition, startDrawing, move, finishDrawing } = useMove()
-
+  // download hook
   const { downloaded, saveImageToLocal } = useDownload(canvasRef)
-
-  const [angle, setAngle] = useState(0)
+  // overflow hook
+  const { scrollHandlerOn, scrollHandlerOff } = useOverFlow()
+  // angle hook
+  const { angle, angleHandler } = useAngle()
 
   // download image
   const image = useMemo(() => new Image(), [])
@@ -97,30 +105,10 @@ function Canvas({ loadedImage, imageHandler, maskCrop }) {
     draw()
   }, [draw])
 
-  // change angle of image if we change it move direction is changed to
-  // that will make move top change to move left for example
-  const angleHandler = (e) => {
-    setAngle(e.target.value)
-  }
-
-  const scrollHandlerOn = () => {
-    document.body.style.overflow = "hidden"
-  }
-
-  const scrollHandlerOff = () => {
-    document.body.style.overflow = "auto"
-  }
-
   return (
     <div className={classes.box}>
       <div className={classes.mask_box}>
-        <img
-          src={mask}
-          alt="Mask"
-          width="600px"
-          height="600px"
-          className={classes.mask}
-        />
+        <img src={mask} alt="Mask" className={classes.mask} />
       </div>
 
       <div className={classes.canvasBox}>
@@ -140,43 +128,23 @@ function Canvas({ loadedImage, imageHandler, maskCrop }) {
           Nothing?
         </canvas>
       </div>
+
       <div className={classes.settings_box}>
-        <div className={classes.setting}>
-          <label className={classes.setting_input} htmlFor="volume">
-            Scale
-          </label>
-          <input
-            className={classes.setting_input}
-            type="range"
-            id="volume"
-            name="volume"
-            min={200}
-            value={size}
-            max={1000}
-            onChange={sizeHandler}
-          />
-        </div>
-        <div className={classes.setting}>
-          <label className={classes.setting_input} htmlFor="position">
-            Rotate {angle}
-          </label>
-          <input
-            className={classes.setting_input}
-            type="range"
-            id="position"
-            name="position"
-            value={angle}
-            min="-180"
-            step="5"
-            max="180"
-            onChange={angleHandler}
-          />
-        </div>
-        <div className={classes.setting}>
-          <button className={classes.download} onClick={saveImageToLocal}>
-            Download Image
-          </button>
-        </div>
+        <Input
+          value={size}
+          handler={sizeHandler}
+          name={"Scale"}
+          min={200}
+          max={1000}
+        />
+        <Input
+          value={angle}
+          handler={angleHandler}
+          name={"Position"}
+          min={-180}
+          max={180}
+        />
+        <DownloadButton handler={saveImageToLocal} />
       </div>
     </div>
   )

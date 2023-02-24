@@ -23,8 +23,6 @@ const useDownload = (canvasRef) => {
     link.click()
     document.body.removeChild(link)
 
-    // await delay(8)
-
     setDownloaded((prevState) => !prevState)
   }
 

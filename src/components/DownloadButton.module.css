@@ -1,0 +1,9 @@
+.download {
+  text-decoration: none;
+  color: black;
+  font-size: 25px;
+  margin-top: 15px;
+}
+.download:hover {
+  color: red;
+}

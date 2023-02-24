@@ -1,0 +1,9 @@
+.setting {
+  width: 45%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+.setting_input {
+  font-size: 25px;
+}

@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 const useSize = () => {
-  const [size, setSize] = useState(200)
+  const [size, setSize] = useState(600)
 
   const sizeHandler = (e) => {
     setSize(parseInt(e.target.value))

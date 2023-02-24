@@ -14,7 +14,10 @@
   margin-right: 40%;
   font-size: 5vh;
   pointer-events: none;
-  /* background-color: rgb(245, 243, 243); */
+}
+.mask {
+  width: 600px;
+  height: 600px;
 }
 
 .canvasBox {
@@ -32,23 +35,4 @@
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: column;
-}
-
-.setting {
-  width: 45%;
-  display: flex;
-  justify-content: space-between;
-  margin-top: 15px;
-}
-.setting_input {
-  font-size: 25px;
-}
-
-.download {
-  text-decoration: none;
-  color: black;
-  font-size: 25px;
-}
-.download:hover {
-  color: red;
 }
