@@ -14,17 +14,9 @@ function Canvas({ loadedImage, imageHandler, maskCrop }) {
   const { size, sizeHandler, sizeByWheelHandler } = useSize()
 
   // moving image
-  const {
-    xPosition,
-    yPosition,
-    changePosition,
-    startDrawing,
-    move,
-    finishDrawing,
-  } = useMove()
+  const { xPosition, yPosition, startDrawing, move, finishDrawing } = useMove()
 
-  const { downloaded, toggleCropHandler, saveImageToLocal } =
-    useDownload(canvasRef)
+  const { downloaded, saveImageToLocal } = useDownload(canvasRef)
 
   const [angle, setAngle] = useState(0)
 
@@ -39,8 +31,7 @@ function Canvas({ loadedImage, imageHandler, maskCrop }) {
     canvas.width = 330
     canvas.height = 330
     ctxRef.current = ctx
-    changePosition(60, 50)
-  }, [])
+  }, [downloaded])
 
   // rendering image
   const draw = useMemo(
@@ -57,6 +48,7 @@ function Canvas({ loadedImage, imageHandler, maskCrop }) {
           )
 
           // make crop
+
           if (downloaded === true) {
             let Mask = new Path2D(maskCrop)
             const position = new Path2D()
@@ -109,7 +101,6 @@ function Canvas({ loadedImage, imageHandler, maskCrop }) {
   // that will make move top change to move left for example
   const angleHandler = (e) => {
     setAngle(e.target.value)
-    // changePosition(canvasRef.current.width / 4, canvasRef.current.height / 4)
   }
 
   const scrollHandlerOn = () => {
@@ -119,8 +110,6 @@ function Canvas({ loadedImage, imageHandler, maskCrop }) {
   const scrollHandlerOff = () => {
     document.body.style.overflow = "auto"
   }
-
-  //
 
   return (
     <div className={classes.box}>
@@ -183,28 +172,11 @@ function Canvas({ loadedImage, imageHandler, maskCrop }) {
             onChange={angleHandler}
           />
         </div>
-        {!downloaded && (
-          <div className={classes.setting}>
-            <button
-              className={classes.setting_input}
-              onClick={toggleCropHandler}
-            >
-              Image cut
-            </button>
-          </div>
-        )}
-
-        {downloaded && (
-          <div className={classes.setting}>
-            <a
-              className={classes.download}
-              href="download_link"
-              onClick={saveImageToLocal}
-            >
-              Download Image
-            </a>
-          </div>
-        )}
+        <div className={classes.setting}>
+          <button className={classes.download} onClick={saveImageToLocal}>
+            Download Image
+          </button>
+        </div>
       </div>
     </div>
   )

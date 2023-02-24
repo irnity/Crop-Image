@@ -4,15 +4,28 @@ const useDownload = (canvasRef) => {
   const [downloaded, setDownloaded] = useState(false)
 
   const toggleCropHandler = () => {
-    setDownloaded(true)
+    setDownloaded((prevState) => !prevState)
   }
 
   // save image canvas
-  const saveImageToLocal = (event) => {
-    let link = event.currentTarget
-    link.setAttribute("download", "canvas.png")
-    let image = canvasRef.current.toDataURL("image/png")
-    link.setAttribute("href", image)
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
+  const saveImageToLocal = async () => {
+    setDownloaded((prevState) => !prevState)
+
+    await delay(5)
+
+    const dataURL = canvasRef.current.toDataURL()
+    const link = document.createElement("a")
+    link.download = "canvas-image.png"
+    link.href = dataURL
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+
+    // await delay(8)
+
+    setDownloaded((prevState) => !prevState)
   }
 
   return { downloaded, toggleCropHandler, saveImageToLocal }
