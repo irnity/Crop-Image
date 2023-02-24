@@ -120,7 +120,7 @@ function Canvas({ loadedImage, maskCrop }) {
 
   return (
     <div className={classes.box}>
-      <div>
+      <div className={`${downloaded ? classes.hidden : undefined}`}>
         <div className={classes.mask_box}>
           <img src={mask} alt="Mask" className={classes.mask} />
         </div>
@@ -144,6 +144,15 @@ function Canvas({ loadedImage, maskCrop }) {
           >
             Nothing?
           </canvas>
+        </div>
+        <div>
+          <h1
+            className={`${classes.loading} ${
+              !downloaded ? classes.hidden : classes.visible
+            }`}
+          >
+            Loading...
+          </h1>
         </div>
       </div>
 
