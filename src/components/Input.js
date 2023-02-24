@@ -4,7 +4,7 @@ function Input(props) {
   return (
     <div className={classes.setting}>
       <label className={classes.setting_input} htmlFor={props.name}>
-        Scale
+        {props.name}
       </label>
       <input
         className={classes.setting_input}
