@@ -49,7 +49,6 @@ const useMove = () => {
     if (!isMouseDragging) {
       return
     }
-    e.preventDefault()
     // right
     if (e.touches[0].clientX > olxX) {
       setXPosition((prevState) => prevState + 4)

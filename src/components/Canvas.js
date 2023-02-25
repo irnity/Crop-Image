@@ -107,10 +107,12 @@ function Canvas({ loadedImage, maskCrop }) {
       loadedImage,
       downloaded,
       angle,
+      size,
       xPosition,
       yPosition,
-      size,
       maskCrop,
+      ePosition,
+      fPosition,
     ]
   )
 
